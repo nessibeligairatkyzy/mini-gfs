@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  master:
+    image: python:3.12
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sh -c "pip install fastapi uvicorn -q && python master.py"
+    ports:
+      - "8080:8080"
+
+  chunkserver1:
+    image: python:3.12
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sh -c "pip install fastapi uvicorn -q && python chunkserver.py"
+    ports:
+      - "8001:8001"
