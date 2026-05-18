@@ -1,4 +1,4 @@
-version: '3'
+version: "3.8"
 
 services:
   master:
@@ -6,15 +6,37 @@ services:
     working_dir: /app
     volumes:
       - .:/app
-    command: sh -c "pip install fastapi uvicorn -q && python master.py"
+    command: sh -c "pip install fastapi uvicorn requests -q && python master.py"
     ports:
       - "8080:8080"
+    depends_on:
+      - chunkserver1
+      - chunkserver2
+      - chunkserver3
 
   chunkserver1:
     image: python:3.12
     working_dir: /app
     volumes:
       - .:/app
-    command: sh -c "pip install fastapi uvicorn -q && python chunkserver.py"
+    command: sh -c "pip install fastapi uvicorn requests -q && python chunkserver.py 8001"
     ports:
       - "8001:8001"
+
+  chunkserver2:
+    image: python:3.12
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sh -c "pip install fastapi uvicorn requests -q && python chunkserver.py 8002"
+    ports:
+      - "8002:8002"
+
+  chunkserver3:
+    image: python:3.12
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sh -c "pip install fastapi uvicorn requests -q && python chunkserver.py 8003"
+    ports:
+      - "8003:8003"
